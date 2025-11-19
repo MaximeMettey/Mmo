@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqwj8r7xvnxpu"]
+[gd_scene load_steps=16 format=3 uid="uid://cqwj8r7xvnxpu"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
-sky_top_color = Color(0.385, 0.454, 0.55, 1)
-sky_horizon_color = Color(0.646, 0.656, 0.67, 1)
-ground_horizon_color = Color(0.646, 0.656, 0.67, 1)
+sky_top_color = Color(0.4, 0.6, 0.9, 1)
+sky_horizon_color = Color(0.7, 0.8, 0.9, 1)
+ground_horizon_color = Color(0.5, 0.6, 0.5, 1)
+ground_bottom_color = Color(0.3, 0.4, 0.3, 1)
+sun_angle_max = 30.0
+sun_curve = 0.15
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("ProceduralSkyMaterial_1")
@@ -14,13 +17,56 @@ sky_material = SubResource("ProceduralSkyMaterial_1")
 background_mode = 2
 sky = SubResource("Sky_1")
 ambient_light_source = 3
+ambient_light_color = Color(0.8, 0.85, 0.9, 1)
 tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.7, 0.8, 0.9, 1)
+fog_density = 0.001
+fog_aerial_perspective = 0.5
+
+[sub_resource type="StandardMaterial3D" id="GrassMaterial"]
+albedo_color = Color(0.25, 0.5, 0.2, 1)
+roughness = 0.9
+normal_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1"]
+material = SubResource("GrassMaterial")
 size = Vector2(100, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(100, 1, 100)
+
+[sub_resource type="CylinderMesh" id="TreeTrunk"]
+top_radius = 0.3
+bottom_radius = 0.35
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="BarkMaterial"]
+albedo_color = Color(0.4, 0.25, 0.15, 1)
+roughness = 0.95
+
+[sub_resource type="SphereMesh" id="TreeLeaves"]
+radius = 1.5
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="LeavesMaterial"]
+albedo_color = Color(0.15, 0.4, 0.1, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="RockMesh"]
+size = Vector3(1.5, 1.2, 1.3)
+
+[sub_resource type="StandardMaterial3D" id="RockMaterial"]
+albedo_color = Color(0.4, 0.4, 0.45, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="WallMesh"]
+size = Vector3(15, 5, 1)
+
+[sub_resource type="StandardMaterial3D" id="StoneMaterial"]
+albedo_color = Color(0.6, 0.55, 0.5, 1)
+roughness = 0.85
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
@@ -40,6 +86,105 @@ mesh = SubResource("PlaneMesh_1")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_1")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Tree1" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -20)
+
+[node name="Trunk" type="MeshInstance3D" parent="Environment/Tree1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("TreeTrunk")
+surface_material_override/0 = SubResource("BarkMaterial")
+
+[node name="Leaves" type="MeshInstance3D" parent="Environment/Tree1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("TreeLeaves")
+surface_material_override/0 = SubResource("LeavesMaterial")
+
+[node name="Tree2" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -25)
+
+[node name="Trunk" type="MeshInstance3D" parent="Environment/Tree2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("TreeTrunk")
+surface_material_override/0 = SubResource("BarkMaterial")
+
+[node name="Leaves" type="MeshInstance3D" parent="Environment/Tree2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("TreeLeaves")
+surface_material_override/0 = SubResource("LeavesMaterial")
+
+[node name="Tree3" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 22)
+
+[node name="Trunk" type="MeshInstance3D" parent="Environment/Tree3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("TreeTrunk")
+surface_material_override/0 = SubResource("BarkMaterial")
+
+[node name="Leaves" type="MeshInstance3D" parent="Environment/Tree3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("TreeLeaves")
+surface_material_override/0 = SubResource("LeavesMaterial")
+
+[node name="Tree4" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 18)
+
+[node name="Trunk" type="MeshInstance3D" parent="Environment/Tree4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("TreeTrunk")
+surface_material_override/0 = SubResource("BarkMaterial")
+
+[node name="Leaves" type="MeshInstance3D" parent="Environment/Tree4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("TreeLeaves")
+surface_material_override/0 = SubResource("LeavesMaterial")
+
+[node name="Rock1" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -20, 0.6, 10)
+mesh = SubResource("RockMesh")
+surface_material_override/0 = SubResource("RockMaterial")
+
+[node name="Rock2" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 12, 0.6, -15)
+mesh = SubResource("RockMesh")
+surface_material_override/0 = SubResource("RockMaterial")
+
+[node name="Rock3" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, -5, 0.6, -18)
+mesh = SubResource("RockMesh")
+surface_material_override/0 = SubResource("RockMaterial")
+
+[node name="Castle" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)
+
+[node name="WallNorth" type="MeshInstance3D" parent="Environment/Castle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("StoneMaterial")
+
+[node name="WallEast" type="MeshInstance3D" parent="Environment/Castle"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7, 2.5, 7)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("StoneMaterial")
+
+[node name="WallWest" type="MeshInstance3D" parent="Environment/Castle"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7, 2.5, 7)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("StoneMaterial")
+
+[node name="Tower1" type="CSGCylinder3D" parent="Environment/Castle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 3.5, 0)
+radius = 1.5
+height = 7.0
+material = SubResource("StoneMaterial")
+
+[node name="Tower2" type="CSGCylinder3D" parent="Environment/Castle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3.5, 0)
+radius = 1.5
+height = 7.0
+material = SubResource("StoneMaterial")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

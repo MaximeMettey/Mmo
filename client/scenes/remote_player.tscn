@@ -1,21 +1,93 @@
-[gd_scene load_steps=5 format=3 uid="uid://dq4vx0h3m8ysj"]
+[gd_scene load_steps=13 format=3 uid="uid://dq4vx0h3m8ysj"]
 
 [ext_resource type="Script" path="res://scripts/remote_player.gd" id="1"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
-albedo_color = Color(0.5, 0.5, 1, 1)
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+
+[sub_resource type="BoxMesh" id="BodyMesh"]
+size = Vector3(0.8, 1.2, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="ArmorMaterial"]
+albedo_color = Color(0.5, 0.5, 0.7, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+radius = 0.3
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="HelmetMaterial"]
+albedo_color = Color(0.6, 0.6, 0.65, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="ArmMesh"]
+size = Vector3(0.25, 0.8, 0.25)
+
+[sub_resource type="BoxMesh" id="LegMesh"]
+size = Vector3(0.3, 0.9, 0.3)
+
+[sub_resource type="BoxMesh" id="SwordMesh"]
+size = Vector3(0.1, 1.2, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="SwordMaterial"]
+albedo_color = Color(0.8, 0.8, 0.85, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="BoxMesh" id="ShieldMesh"]
+size = Vector3(0.05, 0.6, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="ShieldMaterial"]
+albedo_color = Color(0.3, 0.3, 0.8, 1)
+metallic = 0.3
+roughness = 0.6
 
 [node name="RemotePlayer" type="CharacterBody3D"]
 script = ExtResource("1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="KnightModel" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CapsuleMesh_1")
-surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Body" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("ArmorMaterial")
+
+[node name="Head" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("HeadMesh")
+surface_material_override/0 = SubResource("HelmetMaterial")
+
+[node name="ArmLeft" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.5, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("ArmorMaterial")
+
+[node name="Shield" type="MeshInstance3D" parent="KnightModel/ArmLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0)
+mesh = SubResource("ShieldMesh")
+surface_material_override/0 = SubResource("ShieldMaterial")
+
+[node name="ArmRight" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.5, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("ArmorMaterial")
+
+[node name="Sword" type="MeshInstance3D" parent="KnightModel/ArmRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.6, 0)
+mesh = SubResource("SwordMesh")
+surface_material_override/0 = SubResource("SwordMaterial")
+
+[node name="LegLeft" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.45, 0)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ArmorMaterial")
+
+[node name="LegRight" type="MeshInstance3D" parent="KnightModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.45, 0)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ArmorMaterial")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
