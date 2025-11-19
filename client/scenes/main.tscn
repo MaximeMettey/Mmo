@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cqwj8r7xvnxpu"]
+[gd_scene load_steps=7 format=3 uid="uid://cqwj8r7xvnxpu"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 
@@ -19,6 +19,9 @@ tonemap_mode = 2
 [sub_resource type="PlaneMesh" id="PlaneMesh_1"]
 size = Vector2(100, 100)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(100, 1, 100)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
 
@@ -35,8 +38,8 @@ mesh = SubResource("PlaneMesh_1")
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
-shape = BoxShape3D.new()
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
