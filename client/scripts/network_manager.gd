@@ -22,24 +22,35 @@ func connect_to_server(username: String):
 		print("Erreur de connexion: ", err)
 		return false
 
-	# Attendre la connexion
-	await get_tree().create_timer(0.5).timeout
+	# Attendre la connexion (max 3 secondes)
+	var max_attempts = 30
+	var attempts = 0
 
-	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
-		print("Connecté au serveur!")
-		is_connected = true
+	while attempts < max_attempts:
+		socket.poll()
+		var state = socket.get_ready_state()
 
-		# Envoyer le message de join
-		send_message({
-			"type": "join",
-			"username": username
-		})
+		if state == WebSocketPeer.STATE_OPEN:
+			print("Connecté au serveur!")
+			is_connected = true
 
-		connected_to_server.emit()
-		return true
-	else:
-		print("Échec de la connexion")
-		return false
+			# Envoyer le message de join
+			send_message({
+				"type": "join",
+				"username": username
+			})
+
+			connected_to_server.emit()
+			return true
+		elif state == WebSocketPeer.STATE_CLOSED:
+			print("Connexion fermée prématurément")
+			return false
+
+		await get_tree().create_timer(0.1).timeout
+		attempts += 1
+
+	print("Échec de la connexion (timeout)")
+	return false
 
 func _process(_delta):
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
