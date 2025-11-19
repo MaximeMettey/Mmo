@@ -1,0 +1,17 @@
+{
+  "name": "medieval-mmorpg-server",
+  "version": "1.0.0",
+  "description": "Serveur pour le MMORPG médiéval",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": ["mmorpg", "websocket", "game-server"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.2",
+    "better-sqlite3": "^9.2.2"
+  }
+}

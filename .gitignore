@@ -1,0 +1,25 @@
+# Serveur Node.js
+server/node_modules/
+server/game.db
+server/package-lock.json
+
+# Godot
+client/.godot/
+client/.import/
+client/export/
+client/export_presets.cfg
+client/*.import
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
